@@ -5,6 +5,40 @@ dotenv.config()
 import Stripe from "stripe"
 const stripe = new Stripe(process.env.CLIENT_ID)
 
+// Get Orders for User
+const getUserOrders = asyncHandler(async (req,res)=>{
+   const orders = await Order.find({user:req.user._id})
+   if(!orders){
+    res.status(404)
+    throw new Error("Resource Not Found!")
+   }
+   return res.status(200).json(orders)
+})
+
+const getAdminOrders = asyncHandler(async (req,res)=>{
+  const orders = await Order.find({})
+  if(!orders){
+    res.status(404)
+    throw new Error("Resource Not Found!")
+  }
+  return res.status(200).json(orders)
+})
+
+
+// get Order by ID
+const getOrderById = asyncHandler(async(req,res)=>{
+  const order = await Order.findById(req.params.id).populate('user','username email')
+  if(order){
+   res.status(200).json(order)
+  }else{
+   res.status(404)
+   throw new Error("Resource Not Found!")
+  }
+ })
+
+
+
+// Create Order
 const createOrder = asyncHandler(async (req,res)=>{
   const {
     orderItems,
@@ -37,20 +71,8 @@ const createOrder = asyncHandler(async (req,res)=>{
 })
 
 
-// get Order by ID
-const getOrderById = asyncHandler(async(req,res)=>{
- const order = await Order.findById(req.params.id).populate('user','username email')
- if(order){
-  res.status(200).json(order)
- }else{
-  res.status(404)
-  throw new Error("Resource Not Found!")
- }
-})
-
 
 // Updated Order to Paid
-
 const updateOrderToPaid = asyncHandler(async(req,res)=>{
   // Fetching Order to update it
   const order = await Order.findById(req.params.id)
@@ -103,4 +125,7 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
 
 
 
-export {createOrder,getOrderById,updateOrderToPaid}
+
+
+
+export {createOrder,getOrderById,updateOrderToPaid,getUserOrders,getAdminOrders}

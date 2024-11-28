@@ -2,7 +2,7 @@ import React from 'react'
 import { Nav, Navbar, NavDropdown, Container, Image, Badge } from "react-bootstrap"
 import { FaShoppingCart } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useLogOutMutation } from '../features/userApiSlice'
 import { logOut } from '../features/authSlice'
 import { toast } from 'react-toastify'
@@ -34,15 +34,31 @@ function NavbarMain({ theme }) {
 
                         {user ? (<>
                             <NavDropdown title={`${user.username}`} id="basic-nav-dropdown">
-                                <NavDropdown.Item href="#action/3.2">
-                                    Profile
+                                <NavDropdown.Item>
+                                    <NavLink to={"/profile"} className="text-decoration-none text-dark">
+                                        Profile
+                                    </NavLink>
                                 </NavDropdown.Item>
-                                <NavDropdown.Item href="#action/3.3" onClick={handleLogOut}>LogOut</NavDropdown.Item>
+                                <NavDropdown.Item onClick={handleLogOut}>LogOut</NavDropdown.Item>
 
                             </NavDropdown>
                         </>) : (<>
                             <Nav.Link href="#link">SignIn</Nav.Link>
                         </>)}
+
+                        {user?.isAdmin &&  <NavDropdown title={`Admin`} id="basic-nav-dropdown">
+                                <NavDropdown.Item>
+                                    <NavLink to={"/admin/userlist"} className="text-decoration-none text-dark">
+                                        Users
+                                    </NavLink>
+                                </NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    <NavLink to={"/admin/orderlist"} className="text-decoration-none text-dark">
+                                        Orders
+                                    </NavLink>
+                                </NavDropdown.Item>
+
+                            </NavDropdown>}
 
                     </Nav>
                 </Navbar.Collapse>

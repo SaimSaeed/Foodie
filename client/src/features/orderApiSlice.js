@@ -24,21 +24,21 @@ export const orderApiSlice = apiSlice.injectEndpoints({
              method:"POST"
             })
         }),
-        // getClientID: builder.query({
-        //     query: ()=>({
-        //         url:`/api/stripe`
-        //     }),
-        //     keepUnusedDataFor:5
-        // }),
-        //  getPublishableKey: builder.query({
-        //     query: ()=>({
-        //         url:`/api/config`
-        //     }),
-        //     keepUnusedDataFor:5
-        // }),
+        getMyOrders: builder.query({
+            query: ()=>({
+                url:`${ORDERS_URL}/myorders`
+            }),
+            keepUnusedDataFor:5,
+        }),
+        getAllOrders: builder.query({
+            query: ()=>({
+                url:`${ORDERS_URL}/`
+            }),
+            keepUnusedDataFor:5,
+        }),
       
     })
 })
 
 
-export const  {useCreateOrderMutation,useGetOrderDetailsQuery,usePayOrderMutation} = orderApiSlice
+export const  {useCreateOrderMutation,useGetOrderDetailsQuery,usePayOrderMutation,useGetMyOrdersQuery,useGetAllOrdersQuery} = orderApiSlice

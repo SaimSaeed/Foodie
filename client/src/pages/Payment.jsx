@@ -37,8 +37,8 @@ function Payment() {
                                         name='payment'
                                         className='mx-2'
                                         value="COD"
-                                        onChange={e => setPayment(e.target.value)}
-                                        checked
+                                        onClick={e => setPayment(e.target.value)}
+                                
                                     />
                                     Cash On Delivery
                                 </div>
@@ -51,7 +51,7 @@ function Payment() {
                                         name='payment'
                                         className='mx-2'
                                         value="Credit"
-                                        onChange={e => setPayment(e.target.value)}
+                                        onClick={e => setPayment(e.target.value)}
                                     />
                                     Credit Card
                                 </div>

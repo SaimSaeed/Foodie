@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap'
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { usePayOrderMutation } from '../features/orderApiSlice'
 import Message from './Message'
+import { Link } from 'react-router-dom'
 function PaymentForm({ id, order }) {
     const [payOrder, { isLoading, error }] = usePayOrderMutation()
     // setting up stripe
@@ -64,10 +65,7 @@ function PaymentForm({ id, order }) {
 
     return (
         <>
-            {order?.isPaid ? <h6>Your Order is Paid</h6> : <Form onSubmit={handleSubmit}>
-                {
-
-                }
+            {order?.isPaid ?<div className='text-center'> <h6>Your Order is Paid</h6> <Link to={"/"} className='btn btn-sm btn-danger'>Go Back</Link></div> : <Form onSubmit={handleSubmit}>
                 <PaymentElement />
                 <Button variant={"dark"} className='my-2' type="submit" disabled={!stripe || isLoading}>Pay Now</Button>
                 {errorMsg && <Message>{errorMsg}</Message>}

@@ -13,6 +13,10 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import Payment from "./pages/Payment";
 import PlaceOrder from "./pages/PlaceOrder";
 import OrderDetail from "./pages/OrderDetail";
+import Profile from "./pages/Profile";
+import AdminRoutes from "./components/AdminRoutes";
+import UsersList from "./pages/Admin/UsersList";
+import OrderList from "./pages/Admin/OrderList";
 
 function App() {
   return (
@@ -27,11 +31,19 @@ function App() {
 <Route path="/register" element={<Register/>}/>
 
 <Route element={<PrivateRoutes/>}>
+<Route path="/profile" element={<Profile/>}/>
 <Route path="/shipping" element={<Shipping/>}/>
 <Route path="/payment" element={<Payment/>}/>
 <Route path="/placeorder" element={<PlaceOrder/>}/>
 <Route path="/order/:id" element={<OrderDetail/>}/>
 
+
+
+</Route>
+
+<Route element={<AdminRoutes/>}>
+<Route path="/admin/userlist" element={<UsersList/>}/>
+<Route path="/admin/orderlist" element={<OrderList/>}/>
 
 
 </Route>
