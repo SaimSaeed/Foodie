@@ -86,22 +86,59 @@ const LogOut = asyncHandler(async (req, res) => {
 
 const updateUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id)
-    if (user){
-      user.username = req.body.username || user.username
-      user.email = req.body.email || user.email
-      user.password = req.body.password || user.password
-      const updatedUser = await  user.save()
-      return  res.status(200).json({
-        _id:updatedUser._id,
-        username:updatedUser.username,
-        email:updatedUser.email,
-        isAdmin: updatedUser.isAdmin
-      })
+    if (user) {
+        user.username = req.body.username || user.username
+        user.email = req.body.email || user.email
+        user.password = req.body.password || user.password
+        const updatedUser = await user.save()
+        return res.status(200).json({
+            _id: updatedUser._id,
+            username: updatedUser.username,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin
+        })
 
-    }else{
+    } else {
         res.status(404)
         throw new Error("User Not Found!")
     }
+})
+
+
+const getUsers = asyncHandler(async (req, res) => {
+    const users = await User.find({}).select("-password")
+    if (!users) {
+        res.status(404)
+        throw new Error("Resource Not Found!")
+    }
+    return res.status(200).json(users)
+})
+
+const deleteUsers = asyncHandler(async (req, res) => {
+    const user = await User.findById({ _id: req.params.id })
+    if (!user) {
+        res.status(404)
+        throw new Error("Resource Not Found!")
+    }
+
+   const deleteUser =  await User.deleteOne({ _id: req.params.id })
+   if(deleteUser){
+    return res.status(202).json("User Deleted Successfully")
+   }else{
+    res.status(500)
+    throw new Error("There has been an Error")
+   }
+
+})
+
+
+const getUserById = asyncHandler(async (req,res)=>{
+   const user = await User.findById({_id:req.params.id}).select("-password")
+   if(!user){
+    res.status(404)
+    throw new Error("Resource Not Found!")
+   }
+   return res.status(200).json(user)
 })
 
 
@@ -116,5 +153,4 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 
 
 
-
-export { Login, Register, LogOut,updateUserProfile }
+export { Login, Register, LogOut, updateUserProfile, getUsers ,deleteUsers,getUserById}

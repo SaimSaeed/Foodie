@@ -17,6 +17,7 @@ import Profile from "./pages/Profile";
 import AdminRoutes from "./components/AdminRoutes";
 import UsersList from "./pages/Admin/UsersList";
 import OrderList from "./pages/Admin/OrderList";
+import UsersEdit from "./pages/Admin/UsersEdit";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
 
 <Route element={<AdminRoutes/>}>
 <Route path="/admin/userlist" element={<UsersList/>}/>
+<Route path="/admin/user/:id/edit" element={<UsersEdit/>}/>
 <Route path="/admin/orderlist" element={<OrderList/>}/>
 
 
