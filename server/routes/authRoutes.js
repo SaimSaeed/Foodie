@@ -1,10 +1,10 @@
 import express from "express"
-import { Login, Register,LogOut, updateUserProfile, getUsers, deleteUsers, getUserById } from "../controllers/authController.js"
+import { Login, Register,LogOut, updateUserProfile, getUsers, deleteUsers, getUserById, updateUserById } from "../controllers/authController.js"
 import { protect,admin } from "../middleware/AuthMiddleware.js"
 const router = express.Router()
 
 router.route("/").get(protect,admin,getUsers)
-router.route("/:id").get(protect,admin,getUserById).delete(protect,admin,deleteUsers)
+router.route("/:id").get(protect,admin,getUserById).delete(protect,admin,deleteUsers).put(protect,admin,updateUserById)
 router.post("/login",Login)
 router.post("/register",Register)
 router.post("/logout",LogOut)

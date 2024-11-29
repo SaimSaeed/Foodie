@@ -111,6 +111,16 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
 })
 
 
+const updateOrderToDelivered = asyncHandler(async (req,res)=>{
+   const order = await Order.findById({_id:req.params.id})
+   if(!order){
+    res.status(404)
+    throw new Error("Resource Not Found!")
+   }
+   order.isDelivered = Boolean(req.body.isDelivered)
+   order.deliveredAt= Date.now()
+   order.save()
+})
 
 
 
@@ -128,4 +138,6 @@ const updateOrderToPaid = asyncHandler(async(req,res)=>{
 
 
 
-export {createOrder,getOrderById,updateOrderToPaid,getUserOrders,getAdminOrders}
+
+
+export {createOrder,getOrderById,updateOrderToPaid,getUserOrders,getAdminOrders,updateOrderToDelivered}

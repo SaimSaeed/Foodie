@@ -121,24 +121,39 @@ const deleteUsers = asyncHandler(async (req, res) => {
         throw new Error("Resource Not Found!")
     }
 
-   const deleteUser =  await User.deleteOne({ _id: req.params.id })
-   if(deleteUser){
-    return res.status(202).json("User Deleted Successfully")
-   }else{
-    res.status(500)
-    throw new Error("There has been an Error")
-   }
+    const deleteUser = await User.deleteOne({ _id: req.params.id })
+    if (deleteUser) {
+        return res.status(202).json("User Deleted Successfully")
+    } else {
+        res.status(500)
+        throw new Error("There has been an Error")
+    }
 
 })
 
 
-const getUserById = asyncHandler(async (req,res)=>{
-   const user = await User.findById({_id:req.params.id}).select("-password")
-   if(!user){
-    res.status(404)
-    throw new Error("Resource Not Found!")
-   }
-   return res.status(200).json(user)
+const getUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById({ _id: req.params.id }).select("-password")
+    if (!user) {
+        res.status(404)
+        throw new Error("Resource Not Found!")
+    }
+    return res.status(200).json(user)
+})
+
+
+const updateUserById = asyncHandler(async (req, res) => {
+    const user = await User.findById({ _id: req.params.id })
+    if (!user) {
+        res.status(404)
+        throw new Error("Resource Not Found!")
+    }
+    user.username = req.body.username || user.username;
+    user.email = req.body.email || user.email;
+    user.password = req.body.password || user.password;
+    user.isAdmin = Boolean(req.body.isAdmin)
+    user.save()
+    return res.status(200).json("User Updated Successfully!")
 })
 
 
@@ -148,9 +163,4 @@ const getUserById = asyncHandler(async (req,res)=>{
 
 
 
-
-
-
-
-
-export { Login, Register, LogOut, updateUserProfile, getUsers ,deleteUsers,getUserById}
+export { Login, Register, LogOut, updateUserProfile, getUsers, deleteUsers, getUserById ,updateUserById}
