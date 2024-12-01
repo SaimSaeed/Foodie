@@ -57,6 +57,11 @@ function NavbarMain({ theme }) {
                                         Orders
                                     </NavLink>
                                 </NavDropdown.Item>
+                                <NavDropdown.Item>
+                                    <NavLink to={"/admin/productlist"} className="text-decoration-none text-dark">
+                                        Products
+                                    </NavLink>
+                                </NavDropdown.Item>
 
                             </NavDropdown>}
 

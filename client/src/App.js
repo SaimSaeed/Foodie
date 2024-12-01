@@ -18,7 +18,8 @@ import AdminRoutes from "./components/AdminRoutes";
 import UsersList from "./pages/Admin/UsersList";
 import OrderList from "./pages/Admin/OrderList";
 import UsersEdit from "./pages/Admin/UsersEdit";
-
+import ProductList from "./pages/Admin/ProductList";
+import ProductEdit from "./pages/Admin/ProductEdit";
 function App() {
   return (
 <>
@@ -46,6 +47,10 @@ function App() {
 <Route path="/admin/userlist" element={<UsersList/>}/>
 <Route path="/admin/user/:id/edit" element={<UsersEdit/>}/>
 <Route path="/admin/orderlist" element={<OrderList/>}/>
+<Route path="/admin/productlist" element={<ProductList/>}/>
+<Route path="/admin/product/:id/edit" element={<ProductEdit/>}/>
+
+
 
 
 </Route>
