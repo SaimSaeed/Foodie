@@ -36,9 +36,6 @@ app.use("/api/orders", orderRoutes)
 // })
 
 
-
-
-
 app.use(notFound)
 app.use(errorHandler)
 

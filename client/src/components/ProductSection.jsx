@@ -3,7 +3,7 @@ import { Row, Col, Container } from 'react-bootstrap'
 import Product from './Product'
 import { useGetproductsQuery } from '../features/productApiSlice'
 import Loader from './Loader'
-
+import Message from "./Message"
 function ProductSection() {
 
     // const products = [
@@ -61,7 +61,7 @@ function ProductSection() {
     console.log(products)
     return (
         <Container>
-            {isLoading ? <Loader /> : error ? error?.data?.message || error.error : (<>  <div className="headingContainer d-flex justify-content-center align-items-center flex-column py-3">
+            {isLoading ? <Loader /> :error ? <Message variant={"danger"}>{error?.data?.message || error.error}</Message>  : (<>  <div className="headingContainer d-flex justify-content-center align-items-center flex-column py-3">
                 <p style={{ fontSize: "2.5rem", fontWeight: "700" }} className='text-center my-1'>We Serve</p>
                 <div style={{ width: "20vw", height: "8px" }} className='my-2 rounded bg-danger'></div>
             </div>

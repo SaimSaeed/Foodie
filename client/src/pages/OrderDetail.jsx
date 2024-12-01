@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Row, Col, ListGroup, Image, Card, Container, Button } from "react-bootstrap"
-import { useGetOrderDetailsQuery, useUpdateOrderToDeliveredMutation } from '../features/orderApiSlice'
+import { useGetOrderDetailsQuery, useUpdateOrderToDeliveredMutation, useUpdatePaidMutation } from '../features/orderApiSlice'
 import { Link, useParams } from 'react-router-dom'
 import Message from '../components/Message'
 // Importing stripe elements and load stripe
@@ -18,8 +18,9 @@ const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY)
 function OrderDetail() {
 const {user} = useSelector(state=>state.auth)
   const { id } = useParams()
-  const { data: order} = useGetOrderDetailsQuery(id)
+  const { data: order,refetch} = useGetOrderDetailsQuery(id)
   const [updateDelivered] = useUpdateOrderToDeliveredMutation()
+  const [updatePaid] = useUpdatePaidMutation()
   // const {data:pKey,isLoading:loadingPKEY,error:errorPKEY} = useGetPublishableKeyQuery()
   // const [stripePromise,setStripePromise] = useState(null)
   //  useEffect(()=>{
@@ -55,11 +56,20 @@ const updateDeliveredHandler = async (id)=>{
       isDelivered: true
     }
      await updateDelivered({data,id})
+     refetch()
   } catch (error) {
     toast.error(error?.data?.message || error.error)
   }
 }
   
+const updatePaidHandler = async (id)=>{
+  try {
+    await updatePaid(id)
+    refetch()    
+  } catch (error) {
+    toast.error(error?.data?.message || error.error)
+  }
+}
   
   
   return (
@@ -165,7 +175,7 @@ const updateDeliveredHandler = async (id)=>{
 
               </ListGroup.Item>
               
-                <ListGroup.Item className='mx-auto'>
+                <ListGroup.Item className='text-center'>
                   {order?.paymentMethod === "COD" ? <Link className='btn btn-dark btn-sm' to={"/"}>Go to Home</Link> :
                   <Elements stripe={stripePromise} options={options}>
                     <PaymentForm id={id} order={order}/>
@@ -173,8 +183,16 @@ const updateDeliveredHandler = async (id)=>{
                   }
                 </ListGroup.Item>
                 <ListGroup.Item className='text-center'>
-                  {user?.isAdmin && order?.isDelivered ? <p>Order is Delivered</p> : <Button variant='danger' className='btn-sm' onClick={()=>updateDeliveredHandler(order._id)}>Update Order to Delivered</Button>}
+                 {user?.isAdmin && order?.isDelivered ? <p>Order is Delivered</p> : <Button variant='danger' className='btn-sm' onClick={()=>updateDeliveredHandler(order._id)}>Update to Delivered</Button>}
                 </ListGroup.Item>
+                {
+                  order?.paymentMethod === "COD" &&
+                  <ListGroup.Item className='text-center'>
+                  {user?.isAdmin && order?.isPaid ? <p>Order is Paid</p> : <Button variant='dark' className='btn-sm' onClick={()=>updatePaidHandler(order._id)}>Update to Paid</Button>}
+                </ListGroup.Item>
+                }
+              
+                
             </ListGroup>
           </Card>
         </Col>
