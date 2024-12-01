@@ -45,17 +45,11 @@ function Profile() {
         }
     }
     return (
-        <Container>
-            <Row className='py-2'>
-                <Col className='d-flex justify-content-end align-items-center'>
-                    <Link to={"/"} className='btn btn-danger btn-sm mx-2'>
-                        Home
+        <Container className='p-4'>
+          
+            <Link to={"/"} className='btn btn-danger btn-sm mx-2 my-3'>
+                       Go to Home
                     </Link>
-                    <Link to={"/admin"} className='btn btn-danger btn-sm'>
-                        Admin
-                    </Link>
-                </Col>
-            </Row>
             <Row>
                 <Col xs={12} md={4}>
                     <h2>Profile</h2>
