@@ -28,7 +28,6 @@ function Profile() {
 
    
 
-   console.log(orders)
 
 
     const handleSubmit = async (e) => {

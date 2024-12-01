@@ -16,9 +16,9 @@ import { toast } from 'react-toastify'
 const stripePromise = loadStripe(process.env.REACT_APP_PUBLISHABLE_KEY)
 
 function OrderDetail() {
-const {user} = useSelector(state=>state.auth)
+  const { user } = useSelector(state => state.auth)
   const { id } = useParams()
-  const { data: order,refetch} = useGetOrderDetailsQuery(id)
+  const { data: order, refetch } = useGetOrderDetailsQuery(id)
   const [updateDelivered] = useUpdateOrderToDeliveredMutation()
   const [updatePaid] = useUpdatePaidMutation()
   // const {data:pKey,isLoading:loadingPKEY,error:errorPKEY} = useGetPublishableKeyQuery()
@@ -29,18 +29,18 @@ const {user} = useSelector(state=>state.auth)
 
   //  console.log(stripePromise)
 
-  
 
-  
+
+
 
 
   // Setting up the options for the payment
-  const options = order ?{
+  const options = order ? {
     mode: 'payment',
     amount: order.totalPrice * 100,
     currency: 'usd',
     // Fully customizable with appearance API.
-    appearance: {/*...*/ } ,
+    appearance: {/*...*/ },
   } : {
     mode: 'payment',
     amount: 1000,
@@ -49,29 +49,29 @@ const {user} = useSelector(state=>state.auth)
     appearance: {/*...*/ }
   }
 
-  
-const updateDeliveredHandler = async (id)=>{
-  try {
-    const data = {
-      isDelivered: true
+
+  const updateDeliveredHandler = async (id) => {
+    try {
+      const data = {
+        isDelivered: true
+      }
+      await updateDelivered({ data, id })
+      refetch()
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
     }
-     await updateDelivered({data,id})
-     refetch()
-  } catch (error) {
-    toast.error(error?.data?.message || error.error)
   }
-}
-  
-const updatePaidHandler = async (id)=>{
-  try {
-    await updatePaid(id)
-    refetch()    
-  } catch (error) {
-    toast.error(error?.data?.message || error.error)
+
+  const updatePaidHandler = async (id) => {
+    try {
+      await updatePaid(id)
+      refetch()
+    } catch (error) {
+      toast.error(error?.data?.message || error.error)
+    }
   }
-}
-  
-  
+
+
   return (
     <Container>
 
@@ -174,25 +174,28 @@ const updatePaidHandler = async (id)=>{
                 </Row>
 
               </ListGroup.Item>
-              
-                <ListGroup.Item className='text-center'>
-                  {order?.paymentMethod === "COD" ? <Link className='btn btn-dark btn-sm' to={"/"}>Go to Home</Link> :
+
+              <ListGroup.Item className='text-center'>
+                {order?.paymentMethod === "COD" ? <Link className='btn btn-dark btn-sm' to={"/"}>Go to Home</Link> :
                   <Elements stripe={stripePromise} options={options}>
-                    <PaymentForm id={id} order={order}/>
+                    <PaymentForm id={id} order={order} />
                   </Elements>
-                  }
-                </ListGroup.Item>
-                <ListGroup.Item className='text-center'>
-                 {user?.isAdmin && order?.isDelivered ? <p>Order is Delivered</p> : <Button variant='danger' className='btn-sm' onClick={()=>updateDeliveredHandler(order._id)}>Update to Delivered</Button>}
-                </ListGroup.Item>
-                {
-                  order?.paymentMethod === "COD" &&
-                  <ListGroup.Item className='text-center'>
-                  {user?.isAdmin && order?.isPaid ? <p>Order is Paid</p> : <Button variant='dark' className='btn-sm' onClick={()=>updatePaidHandler(order._id)}>Update to Paid</Button>}
-                </ListGroup.Item>
                 }
-              
-                
+              </ListGroup.Item>
+              {user?.isAdmin &&
+                <ListGroup.Item className='text-center'>
+                  {order?.isDelivered ? <p>Order is Delivered</p> : <Button variant='danger' className='btn-sm' onClick={() => updateDeliveredHandler(order._id)}>Update to Delivered</Button>}
+                </ListGroup.Item>
+              }
+              {
+                user?.isAdmin && order?.paymentMethod === "COD" ?
+                  <ListGroup.Item className='text-center'>
+                    {order?.isPaid ? <p>Order is Paid</p> : <Button variant='dark' className='btn-sm' onClick={() => updatePaidHandler(order._id)}>Update to Paid</Button>}
+                  </ListGroup.Item> : <></>
+
+              }
+
+
             </ListGroup>
           </Card>
         </Col>
