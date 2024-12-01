@@ -5,10 +5,11 @@ import Message from '../../components/Message'
 import Loader from '../../components/Loader'
 import { FaTrash, FaPenToSquare } from 'react-icons/fa6'
 import { toast } from 'react-toastify'
-import { useDeleteproductMutation, useGetproductsQuery } from '../../features/productApiSlice'
+import { useCreateproductMutation, useDeleteproductMutation, useGetproductsQuery } from '../../features/productApiSlice'
 function ProductList() {
 
   const { data: products, isLoading, error,refetch } = useGetproductsQuery()
+  const [createProduct] = useCreateproductMutation()
   const [deleteProduct] = useDeleteproductMutation()
 
   const handleDelete = async (id) => {
@@ -24,13 +25,34 @@ function ProductList() {
     }
 
   }
+
+  const handleCreate = async()=>{
+   try {
+      await createProduct()
+      toast.success("Product Created Successfully!")
+      refetch()
+   } catch (error) {
+     toast.error(error?.data?.message || error.error)
+   }
+  }
+
   return (
     <Container className='p-4'>
+       
       <Link to="/" className="btn btn-sm btn-danger">Go Back</Link>
-      <h2 className='my-4'>Product List</h2>
+      <Row>
+         
+         <Col>
+       <h2 className='my-4'>Product List</h2>
+         </Col>
+         <Col className='d-flex align-items-center justify-content-end'>
+       <Button onClick={handleCreate} className='btn-sm btn-dark'>Create Product</Button>
+ 
+         </Col>
+         </Row>
       <Row>
         <Col>
-          {isLoading ? <Loader /> : error ? <Message>{error?.data?.message || error.error}</Message> :
+          {isLoading ? <Loader /> : error ? <Message variant={"danger"}>{error?.data?.message || error.error}</Message> :
 
             <Table responsive hover className='my-2'>
               <thead>
@@ -48,7 +70,7 @@ function ProductList() {
                   <tr>
                     <td>{product._id}</td>
                     <td className='text-center'>{product.title}</td>
-                    <td className='text-center'>{product.price}</td>
+                    <td className='text-center'>${product.price}</td>
                     <td className='text-center'>{product.countInStock}</td>
                     <td className='text-center'>{product.reviewNum}</td>
                     <td className='text-center'>{product.category}</td>

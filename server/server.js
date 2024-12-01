@@ -17,6 +17,7 @@ mongoose.connect(process.env.MONGO_URI)
         console.log(error)
     })
 
+    
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))

@@ -30,7 +30,7 @@ function UsersList() {
       <h2 className='my-4'>User List</h2>
       <Row>
         <Col>
-          {isLoading ? <Loader /> : error ? <Message>{error?.data?.message || error.error}</Message> :
+          {isLoading ? <Loader /> : error ? <Message variant={"danger"}>{error?.data?.message || error.error}</Message> :
 
             <Table responsive hover className='my-2'>
               <thead>

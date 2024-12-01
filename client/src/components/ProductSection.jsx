@@ -58,9 +58,8 @@ function ProductSection() {
 
 
     const { data: products, isLoading, error } = useGetproductsQuery()
-    console.log(products)
     return (
-        <Container>
+        <Container className='p-2'>
             {isLoading ? <Loader /> :error ? <Message variant={"danger"}>{error?.data?.message || error.error}</Message>  : (<>  <div className="headingContainer d-flex justify-content-center align-items-center flex-column py-3">
                 <p style={{ fontSize: "2.5rem", fontWeight: "700" }} className='text-center my-1'>We Serve</p>
                 <div style={{ width: "20vw", height: "8px" }} className='my-2 rounded bg-danger'></div>

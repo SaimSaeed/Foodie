@@ -75,7 +75,7 @@ function Profile() {
                 <Col xs={12} md={8}>
                     <h2>My Orders</h2>
 
-                    {loadingOrders ? <Loader/> : errorOrders ? <Message>{errorOrders?.data?.message || errorOrders.error}</Message>:
+                    {loadingOrders ? <Loader/> : errorOrders ? <Message variant={"danger"}>{errorOrders?.data?.message || errorOrders.error}</Message>:
      
                     <Table  responsive hover  className='my-2'>
                     <thead>
