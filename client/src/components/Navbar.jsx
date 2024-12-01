@@ -30,7 +30,7 @@ function NavbarMain({ theme }) {
                     <Nav className="ms-auto">
                         {/* <Nav.Link href="#home" >Home</Nav.Link> */}
 
-                        <Nav.Link> <Link to={"/cart"}><FaShoppingCart /><Badge>{cartItems?.length}</Badge></Link></Nav.Link>
+                        <Nav.Link className='mx-4 position-relative'> <NavLink to={"/cart"} className='text-white'><FaShoppingCart/></NavLink><Badge className='bg-dark rounded-circle position-absolute' >{cartItems?.length}</Badge></Nav.Link>
 
                         {user ? (<>
                             <NavDropdown title={`${user.username}`} id="basic-nav-dropdown">
