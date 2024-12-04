@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Form,Container,Row,Col,Button} from "react-bootstrap"
-import { useGetproductQuery, useUpdateproductMutation } from '../../features/productApiSlice'
+import { useGetproductQuery, useUpdateproductMutation, useUploadImageMutation } from '../../features/productApiSlice'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 function ProductEdit() {
@@ -13,6 +13,7 @@ function ProductEdit() {
     const [imageSrc,setImageSrc] = useState("")
     const [updateProduct] = useUpdateproductMutation()
     const {data:product,isLoading,error,refetch} = useGetproductQuery(id)
+    const [uploadProductImage] = useUploadImageMutation()
 
 
 
@@ -34,7 +35,8 @@ function ProductEdit() {
             desc,
             category,
             price,
-            countInStock
+            countInStock,
+            imageSrc
          }
          await updateProduct({data,id})
          toast.success("Updated")
@@ -44,17 +46,29 @@ function ProductEdit() {
       }
     }
 
+    const uploadImageHandler =async (e)=>{
+   const formData = new FormData()
+    formData.append("image", e.target.files[0])
+    try {
+    const res = await uploadProductImage(formData) 
+    toast.success(res?.data?.message)
+    setImageSrc(res?.data?.image)
+    } catch (error) {
+     toast.error(error?.data?.message || error.error)
+    }
+    }
+
    
   return (
     <Container>
     <Row className='p-4'>
         <Col>
             <h2 className='text-center'>Edit Product</h2>
-            <Form className='w-50 mx-auto' onSubmit={handleSubmit}>
+            <Form className='w-50 mx-auto' onSubmit={handleSubmit} encType='multipart/form-data'>
                 <Form.Label>
                     Upload Image
                 </Form.Label>
-                <Form.Control type='file'/>
+                <Form.Control type='file' name='image' onChange={uploadImageHandler}/>
                 <Form.Label>
                     Image Src
                 </Form.Label>

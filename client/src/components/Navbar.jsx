@@ -43,7 +43,7 @@ function NavbarMain({ theme }) {
 
                             </NavDropdown>
                         </>) : (<>
-                            <Nav.Link href="#link">SignIn</Nav.Link>
+                            <Nav.Link href="/login">SignIn</Nav.Link>
                         </>)}
 
                         {user?.isAdmin &&  <NavDropdown title={`Admin`} id="basic-nav-dropdown">
