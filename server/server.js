@@ -2,9 +2,11 @@ import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
 import cors from "cors"
+import path from "path"
 import productRoutes from "./routes/productRoutes.js"
 import authRoutes from "./routes/authRoutes.js"
 import orderRoutes from "./routes/orderRoutes.js"
+import uploadRoutes from "./routes/uploadRoutes.js"
 import { notFound, errorHandler } from "./middleware/ErrorMiddleware.js"
 import cookieParser from "cookie-parser"
 dotenv.config()
@@ -31,11 +33,15 @@ app.use(cors(corsOptions));
 app.use("/api/products", productRoutes)
 app.use("/api/auth", authRoutes)
 app.use("/api/orders", orderRoutes)
+app.use("/api/upload", uploadRoutes)
+
 // app.get("/api/stripe",async (req,res)=>{
 //    const client_secret = {clientSecret:process.env.CLIENT_ID}
 //    return res.status(200).json(client_secret)
 // })
 
+const __dirname = path.resolve()
+app.use("/uploads",express.static(path.join(__dirname,"/uploads")))
 
 app.use(notFound)
 app.use(errorHandler)

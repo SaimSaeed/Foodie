@@ -3,7 +3,8 @@ import asyncHandler from "../middleware/AsyncMiddleware.js"
 
 
 const getProducts = asyncHandler(async (req,res)=>{
-   const products = await Product.find({})
+   const searchQ = req.query.search ? {title:{$regex:req.query.search, $options:'i'}} : {}
+   const products = await Product.find({...searchQ})
    if(!products){
     res.status(404)
     throw new Error("Resource Not Found!")

@@ -4,8 +4,10 @@ import Product from './Product'
 import { useGetproductsQuery } from '../features/productApiSlice'
 import Loader from './Loader'
 import Message from "./Message"
+import { useParams } from 'react-router-dom'
 function ProductSection() {
-
+    const {search} = useParams()
+    console.log(search)
     // const products = [
     //     {
     //         id: 1,
@@ -57,7 +59,8 @@ function ProductSection() {
     // ]
 
 
-    const { data: products, isLoading, error } = useGetproductsQuery()
+    const { data: products, isLoading, error } = useGetproductsQuery(search)
+    console.log(products)
     return (
         <Container className='p-2'>
             {isLoading ? <Loader /> :error ? <Message variant={"danger"}>{error?.data?.message || error.error}</Message>  : (<>  <div className="headingContainer d-flex justify-content-center align-items-center flex-column py-3">

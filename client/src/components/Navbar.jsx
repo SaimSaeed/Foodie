@@ -6,6 +6,8 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useLogOutMutation } from '../features/userApiSlice'
 import { logOut } from '../features/authSlice'
 import { toast } from 'react-toastify'
+import SearchForm from './SearchForm'
+import { useGetproductsQuery } from '../features/productApiSlice'
 function NavbarMain({ theme }) {
     const { cartItems } = useSelector(state => state.cart)
     const { user } = useSelector(state => state.auth)
@@ -26,11 +28,14 @@ function NavbarMain({ theme }) {
             <Container>
                 <Navbar.Brand href="#home" className='d-flex align-items-center'><Image src="https://cdn.pixabay.com/photo/2022/05/03/03/41/burger-7170760_960_720.png" width={"8%"} fluid />Foodies</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ms-auto">
                         {/* <Nav.Link href="#home" >Home</Nav.Link> */}
 
-                        <Nav.Link className='mx-4 position-relative'> <NavLink to={"/cart"} className='text-white'><FaShoppingCart/><Badge as={"span"} className='bg-dark rounded-circle position-absolute' >{cartItems?.length}</Badge></NavLink></Nav.Link>
+                        <SearchForm />
+
+                        <Nav.Link className='mx-4 position-relative'> <NavLink to={"/cart"} className='text-white'><FaShoppingCart /><Badge as={"span"} className='bg-dark rounded-circle position-absolute' >{cartItems?.length}</Badge></NavLink></Nav.Link>
 
                         {user ? (<>
                             <NavDropdown title={`${user.username}`} id="basic-nav-dropdown">
@@ -46,24 +51,24 @@ function NavbarMain({ theme }) {
                             <Nav.Link href="/login">SignIn</Nav.Link>
                         </>)}
 
-                        {user?.isAdmin &&  <NavDropdown title={`Admin`} id="basic-nav-dropdown">
-                                <NavDropdown.Item>
-                                    <NavLink to={"/admin/userlist"} className="text-decoration-none text-dark">
-                                        Users
-                                    </NavLink>
-                                </NavDropdown.Item>
-                                <NavDropdown.Item>
-                                    <NavLink to={"/admin/orderlist"} className="text-decoration-none text-dark">
-                                        Orders
-                                    </NavLink>
-                                </NavDropdown.Item>
-                                <NavDropdown.Item>
-                                    <NavLink to={"/admin/productlist"} className="text-decoration-none text-dark">
-                                        Products
-                                    </NavLink>
-                                </NavDropdown.Item>
+                        {user?.isAdmin && <NavDropdown title={`Admin`} id="basic-nav-dropdown">
+                            <NavDropdown.Item>
+                                <NavLink to={"/admin/userlist"} className="text-decoration-none text-dark">
+                                    Users
+                                </NavLink>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <NavLink to={"/admin/orderlist"} className="text-decoration-none text-dark">
+                                    Orders
+                                </NavLink>
+                            </NavDropdown.Item>
+                            <NavDropdown.Item>
+                                <NavLink to={"/admin/productlist"} className="text-decoration-none text-dark">
+                                    Products
+                                </NavLink>
+                            </NavDropdown.Item>
 
-                            </NavDropdown>}
+                        </NavDropdown>}
 
                     </Nav>
                 </Navbar.Collapse>
